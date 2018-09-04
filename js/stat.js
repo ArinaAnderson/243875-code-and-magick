@@ -108,8 +108,15 @@ window.renderStatistics = function (ctx, names, times) {
   var countOfBars = 0;
 
   for (var i = 0; i < names.length; i++) {
-    var color = 'hsl(' + chartParams.hue + ', ' + chartParams.getSaturation() + '%' + ', ' + chartParams.lightness + '%)';
+    /* var color = 'hsl(' + chartParams.hue + ', ' + chartParams.getSaturation() + '%' + ', ' + chartParams.lightness + '%)';
     names[i] === 'Вы' ? ctx.fillStyle = 'red' : ctx.fillStyle = color;
+    ошибка: 112:5  error  Expected an assignment or function call and instead saw an expression  no-unused-expressions
+    */
+    if (names[i] === 'Вы') {
+      ctx.fillStyle = 'red';
+    } else {
+      ctx.fillStyle = 'hsl(' + chartParams.hue + ', ' + chartParams.getSaturation() + '%' + ', ' + chartParams.lightness + '%)';
+    }
     var barX = chartX + countOfBars * (chartParams.barWidth + chartParams.barMarginRght);
     buildBar(ctx, barX, chartBottom, times[i], maxTime, names[i]);
     countOfBars++;
