@@ -1,109 +1,104 @@
 'use strict';
 
 // infoTable характеристики
-var startX = 100;
-var startY = 10;
-var infotableWidth = 420;
-var infotableHeight = 270;
-var topTableColor = 'white';
-var outlineColor = 'rgba(0, 0, 0, 1)';
-var bottomTableColor = 'rgba(0, 0, 0, 0.7)';
-var bottomTableOffset = 10;
-var lineWidth = 1;
-var paddingTop = 18;
+var START_X = 100;
+var START_Y = 10;
+var cloudParams = {
+  WIDTH: 420,
+  HEIGHT: 270,
+  topColor: 'white',
+  bottomColor: 'rgba(0, 0, 0, 0.7)',
+  outlineColor: 'black',
+  offset: 10,
+  lineWidth: 1,
+  paddingTop: 18
+};
 
-// text характеристики
-var textList = ['Ура вы победили!', 'Список результатов!'];
-var font = 'PT Mono';
-var fontSize = 16;
-var textColor = 'black';
-var lineHeight = fontSize * 1.375;// опытным путем определена высота строки: 22px = 16px * 1.375
-var textLines = textList.length;
-var textMarginLeft = 20;
+// text характеристики СОЗДАТЬ ОБЪЕКТ ТЕКСТ headingTextParams + метод построения нарезки текста
+var textParams = {
+  text: 'Ура вы победили! Список результатов!',
+  family: 'PT Mono',
+  size: 16,
+  color: 'black',
+  lineHeight: 1.375,
+  marginLeft: 20,
+  maxLineWidth: 20
+}
 
-// данные и расчеты для построения гистограммы
-var topGap = paddingTop + lineHeight * textLines;
-var barChartMarginLeft = 40;// между левым краем облака и первой колонкой
-var barChartMarginTop = 5;
-var columnWidth = 40;
-var columnMarginRight = 50;
-var columnMarginTop = 0;// между текстом времени и самой колонкой
-var columnMaxHeight = 150;
-
-// голубой цвет
-var blueHue = 216;
-var blueLightness = 50;
-
-// функция поиска максимального значения и функция отрисовки облака
-function getMax(list) {
-  var max = list[0];
-  for (var i = 1; i < list.length; i++) {
-    if (list[i] > max) {
-      max = list[i];
-    }
+// barchart характеристики
+var chartParams = {
+  chartMarginLft: 40,
+  chartMarginTp: 5,
+  barWidth: 40,
+  barMaxHeight: 150,
+  barMarginRght: 50,
+  barMarginTp: 0,
+  hue: 216,
+  lightness: 50,
+  getSaturation: function () {
+    var value = Math.floor(Math.random() * 100);
+    return value;
   }
-  return max;
 }
 
-function drawInfotable(ctx) {
-  ctx.lineWidth = lineWidth;
-  ctx.fillStyle = bottomTableColor;
-  ctx.fillRect(startX + bottomTableOffset, startY + bottomTableOffset, infotableWidth, infotableHeight);
-  ctx.fillStyle = outlineColor;
-  ctx.fillRect(startX - lineWidth, startY - lineWidth, infotableWidth + lineWidth * 2, infotableHeight + lineWidth * 2);
-  ctx.fillStyle = topTableColor;
-  ctx.fillRect(startX, startY, infotableWidth, infotableHeight);
+// функция отрисовки облака
+function drawInfotable(ctx) { //метод
+  ctx.lineWidth = cloudParams.lineWidth;
+  ctx.fillStyle = cloudParams.bottomColor;
+  ctx.fillRect(START_X + cloudParams.offset, START_Y + cloudParams.offset, cloudParams.WIDTH, cloudParams.HEIGHT);
+  ctx.fillStyle = cloudParams.outlineColor;
+  ctx.fillRect(START_X - cloudParams.lineWidth, START_Y - cloudParams.lineWidth, cloudParams.WIDTH + cloudParams.lineWidth * 2, cloudParams.HEIGHT + cloudParams.lineWidth * 2);
+  ctx.fillStyle = cloudParams.topColor;
+  ctx.fillRect(START_X, START_Y, cloudParams.WIDTH, cloudParams.HEIGHT);
 }
+
+// функция добавления текста
+function renderHeading(ctx, text, fontSize, lineHeight, maxWidth) {
+  var linesAmount  = Math.ceil(text.length / maxWidth);// var linesAmount = textParams.numberOfLines;
+  var textArray = text.split(' ');
+  var countOfIndex = 0;
+  for (var j = 1; j <= linesAmount; j++) {
+    var line = '';
+    for (var i = countOfIndex; i < textArray.length; i++) {
+      var check = line + textArray[i];
+      if (check.length > maxWidth) {
+        break;
+      }
+      line = check + ' ';
+      countOfIndex++;
+    }
+    ctx.fillText(line.trim(), START_X + textParams.marginLeft, cloudParams.paddingTop + fontSize * lineHeight * j);
+  }
+}
+
+function buildBar(ctx, x, bottom, value, maxValue, text) {
+    var barHeight = chartParams.barMaxHeight * value / maxValue;
+    ctx.fillRect(x, bottom - barHeight, chartParams.barWidth, barHeight);
+    ctx.fillStyle = textParams.color;
+    ctx.fillText(Math.floor(value), x, bottom - barHeight - chartParams.chartMarginTp);
+    ctx.fillText(text, x, bottom + textParams.lineHeight * textParams.size);
+  }
 
 window.renderStatistics = function (ctx, names, times) {
+  // построение облака
   drawInfotable(ctx);
 
-  // добавление текста
-  ctx.fillStyle = textColor;
-  ctx.font = '' + fontSize + 'px' + ' ' + font;
-  var lines = 1;
-  for (var i = 0; i < textList.length; i++) {
-    ctx.fillText(textList[i], startX + textMarginLeft, paddingTop + lineHeight * lines);
-    lines++;
-  }
-
-  // создание массива отличимых цветов голубого с разной насыщенностью
-  var saturationChangeSpan = 100 / (names.length - 1);// игрок 'Вы' исключен, тк у него красный цвет
-  var blueSaturations = [];
-  var saturation = 0;
-  for (var j = 0; j < names.length - 1; j++) {
-    if (j === names.length - 1) {
-      saturation = 100;
-    } else {
-      saturation += saturationChangeSpan;
-    }
-    blueSaturations.push('hsl(' + blueHue + ', ' + saturation + '%' + ', ' + blueLightness + '%)');
-  }
+  //построение текста
+  ctx.fillStyle = textParams.color;
+  ctx.font = '' + textParams.size + 'px' + ' ' + textParams.family;
+  renderHeading(ctx, textParams.text, textParams.size, textParams.lineHeight, textParams.maxLineWidth);
 
   // построение гистограммы
-  var maxTime = getMax(times);
-  var totalGap = 0;// расстояние слева от новой колонки
-  var countOfColumns = 1;// red column 'Вы'
-  var columnsBottomY = startY + topGap + barChartMarginTop + lineHeight + columnMarginTop + columnMaxHeight;
+  var maxTime = Math.max(...times);
+  var chartY = START_Y + cloudParams.paddingTop + textParams.lineHeight * textParams.size * Math.ceil(textParams.text.length / textParams.maxLineWidth) + chartParams.chartMarginTp;
+  var chartX = START_X + chartParams.chartMarginLft; 
+  var chartBottom = chartY + textParams.lineHeight * textParams.size + chartParams.barMarginTp + chartParams.barMaxHeight;
+  var countOfBars = 0;
 
-  for (i = 0; i < names.length; i++) {
-    if (names[i] === 'Вы') {
-      ctx.fillStyle = 'red';
-      totalGap = barChartMarginLeft;
-    } else {
-      var randomSaturation = blueSaturations[Math.floor(Math.random() * blueSaturations.length)];
-      blueSaturations.splice(blueSaturations.indexOf(randomSaturation), 1);
-      ctx.fillStyle = randomSaturation;
-      totalGap = barChartMarginLeft + countOfColumns * (columnWidth + columnMarginRight);
-      countOfColumns++;
-    }
-
-    var columnHeight = columnMaxHeight * times[i] / maxTime;
-    var columnY = columnsBottomY - columnHeight;
-    ctx.fillRect(startX + totalGap, columnY, columnWidth, columnHeight);
-    var textTimeY = columnsBottomY - columnHeight - barChartMarginTop;
-    ctx.fillStyle = textColor;
-    ctx.fillText(parseInt(times[i], 10), startX + totalGap, textTimeY);
-    ctx.fillText(names[i], startX + totalGap, columnsBottomY + lineHeight);
+  for (var i = 0; i < names.length; i++) {
+    names[i] === 'Вы' ?  ctx.fillStyle = 'red' : ctx.fillStyle =  'hsl(' + chartParams.hue + ', ' + chartParams.getSaturation() + '%' + ', ' + chartParams.lightness + '%)';
+    var barX = chartX + countOfBars * (chartParams.barWidth + chartParams.barMarginRght);
+    buildBar(ctx, barX, chartBottom, times[i], maxTime, names[i]);
+    countOfBars++;
   }
 };
