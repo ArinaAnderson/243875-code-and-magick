@@ -71,6 +71,18 @@ function renderHeading(ctx, text, fontSize, lineHeight, maxWidth) {
   }
 }
 
+// функция поиска максимума
+function getMax(list) {
+  var max = list[0];
+  for (var i = 1; i < list.length; i++) {
+    if (list[i] > max) {
+      max = list[i];
+    }
+  }
+  return max;
+}
+
+// функция построения колонки гистаграммы
 function buildBar(ctx, x, bottom, value, maxValue, text) {
     var barHeight = chartParams.barMaxHeight * value / maxValue;
     ctx.fillRect(x, bottom - barHeight, chartParams.barWidth, barHeight);
@@ -89,7 +101,7 @@ window.renderStatistics = function (ctx, names, times) {
   renderHeading(ctx, textParams.text, textParams.size, textParams.lineHeight, textParams.maxLineWidth);
 
   // построение гистограммы
-  var maxTime = Math.max(...times);
+  var maxTime = getMax(times);
   var chartY = START_Y + cloudParams.paddingTop + textParams.lineHeight * textParams.size * Math.ceil(textParams.text.length / textParams.maxLineWidth) + chartParams.chartMarginTp;
   var chartX = START_X + chartParams.chartMarginLft; 
   var chartBottom = chartY + textParams.lineHeight * textParams.size + chartParams.barMarginTp + chartParams.barMaxHeight;
