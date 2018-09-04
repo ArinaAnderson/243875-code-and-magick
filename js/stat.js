@@ -23,7 +23,7 @@ var textParams = {
   lineHeight: 1.375,
   marginLeft: 20,
   maxLineWidth: 20
-}
+};
 
 // barchart характеристики
 var chartParams = {
@@ -39,10 +39,10 @@ var chartParams = {
     var value = Math.floor(Math.random() * 100);
     return value;
   }
-}
+};
 
 // функция отрисовки облака
-function drawInfotable(ctx) { //метод
+function drawInfotable(ctx) {
   ctx.lineWidth = cloudParams.lineWidth;
   ctx.fillStyle = cloudParams.bottomColor;
   ctx.fillRect(START_X + cloudParams.offset, START_Y + cloudParams.offset, cloudParams.WIDTH, cloudParams.HEIGHT);
@@ -54,7 +54,7 @@ function drawInfotable(ctx) { //метод
 
 // функция добавления текста
 function renderHeading(ctx, text, fontSize, lineHeight, maxWidth) {
-  var linesAmount  = Math.ceil(text.length / maxWidth);// var linesAmount = textParams.numberOfLines;
+  var linesAmount = Math.ceil(text.length / maxWidth);// var linesAmount = textParams.numberOfLines;
   var textArray = text.split(' ');
   var countOfIndex = 0;
   for (var j = 1; j <= linesAmount; j++) {
@@ -84,18 +84,18 @@ function getMax(list) {
 
 // функция построения колонки гистаграммы
 function buildBar(ctx, x, bottom, value, maxValue, text) {
-    var barHeight = chartParams.barMaxHeight * value / maxValue;
-    ctx.fillRect(x, bottom - barHeight, chartParams.barWidth, barHeight);
-    ctx.fillStyle = textParams.color;
-    ctx.fillText(Math.floor(value), x, bottom - barHeight - chartParams.chartMarginTp);
-    ctx.fillText(text, x, bottom + textParams.lineHeight * textParams.size);
-  }
+  var barHeight = chartParams.barMaxHeight * value / maxValue;
+  ctx.fillRect(x, bottom - barHeight, chartParams.barWidth, barHeight);
+  ctx.fillStyle = textParams.color;
+  ctx.fillText(Math.floor(value), x, bottom - barHeight - chartParams.chartMarginTp);
+  ctx.fillText(text, x, bottom + textParams.lineHeight * textParams.size);
+}
 
 window.renderStatistics = function (ctx, names, times) {
   // построение облака
   drawInfotable(ctx);
 
-  //построение текста
+  // построение текста
   ctx.fillStyle = textParams.color;
   ctx.font = '' + textParams.size + 'px' + ' ' + textParams.family;
   renderHeading(ctx, textParams.text, textParams.size, textParams.lineHeight, textParams.maxLineWidth);
@@ -103,12 +103,13 @@ window.renderStatistics = function (ctx, names, times) {
   // построение гистограммы
   var maxTime = getMax(times);
   var chartY = START_Y + cloudParams.paddingTop + textParams.lineHeight * textParams.size * Math.ceil(textParams.text.length / textParams.maxLineWidth) + chartParams.chartMarginTp;
-  var chartX = START_X + chartParams.chartMarginLft; 
+  var chartX = START_X + chartParams.chartMarginLft;
   var chartBottom = chartY + textParams.lineHeight * textParams.size + chartParams.barMarginTp + chartParams.barMaxHeight;
   var countOfBars = 0;
 
   for (var i = 0; i < names.length; i++) {
-    names[i] === 'Вы' ?  ctx.fillStyle = 'red' : ctx.fillStyle =  'hsl(' + chartParams.hue + ', ' + chartParams.getSaturation() + '%' + ', ' + chartParams.lightness + '%)';
+    var color = 'hsl(' + chartParams.hue + ', ' + chartParams.getSaturation() + '%' + ', ' + chartParams.lightness + '%)';
+    names[i] === 'Вы' ? ctx.fillStyle = 'red' : ctx.fillStyle = color;
     var barX = chartX + countOfBars * (chartParams.barWidth + chartParams.barMarginRght);
     buildBar(ctx, barX, chartBottom, times[i], maxTime, names[i]);
     countOfBars++;
