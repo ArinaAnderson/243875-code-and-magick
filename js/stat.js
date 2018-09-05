@@ -69,7 +69,7 @@ function renderHeading(ctx, text, fontSize, lineHeight, maxWidth) {
       line = check;
     }
   }
-  ctx.fillText(line.trim(), START_X + textParams.marginLeft, START_Y + cloudParams.paddingTop + addition)
+  ctx.fillText(line.trim(), START_X + textParams.marginLeft, START_Y + cloudParams.paddingTop + addition);
 }
 
 // функция поиска максимума
