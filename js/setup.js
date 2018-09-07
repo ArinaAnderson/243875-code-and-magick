@@ -10,7 +10,6 @@ var userDialog = document.querySelector('.setup');
 userDialog.classList.remove('hidden');
 var wizardsList = document.querySelector('.setup-similar-list');
 var wizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-var wizards = [];
 
 // создание объекта случайных характеристик мага
 function createWizardData() {
