@@ -1,17 +1,15 @@
 'use strict';
 
-var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
-
-var wizardsList = document.querySelector('.setup-similar-list');
-var wizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
 var NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var WIZARDS_NUMBER = 4;
 
-var wizardsNumber = 4;
+var userDialog = document.querySelector('.setup');
+userDialog.classList.remove('hidden');
+var wizardsList = document.querySelector('.setup-similar-list');
+var wizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 var wizards = [];
 
 // создание объекта случайных характеристик мага
@@ -35,7 +33,11 @@ function renderWizard(wizardData) {
 }
 
 // заполнения фрагмента магами из массива wizards
-function renderWizards(wizardsData) {
+function renderWizards(numberOfWizards) {
+  var wizardsData = [];
+  for (var j = 0; j < numberOfWizards; j++) {
+    wizardsData.push(createWizardData());
+  }
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < wizardsData.length; i++) {
     fragment.appendChild(renderWizard(wizardsData[i]));
@@ -43,10 +45,6 @@ function renderWizards(wizardsData) {
   wizardsList.appendChild(fragment);
 }
 
-for (var i = 0; i < wizardsNumber; i++) {
-  wizards.push(createWizardData());
-}
-
-renderWizards(wizards);
+renderWizards(WIZARDS_NUMBER);
 
 document.querySelector('.setup-similar').classList.remove('hidden');
