@@ -7,18 +7,16 @@ var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var WIZARDS_NUMBER = 4;
 
 var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
 var wizardsList = document.querySelector('.setup-similar-list');
 var wizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
 // создание объекта случайных характеристик мага
 function createWizardData() {
-  var wizard = {
+  return {
     name: NAMES[Math.floor(Math.random() * NAMES.length)] + ' ' + SURNAMES[Math.floor(Math.random() * SURNAMES.length)],
     coatColor: COAT_COLORS[Math.floor(Math.random() * COAT_COLORS.length)],
     eyesColor: EYES_COLORS[Math.floor(Math.random() * EYES_COLORS.length)],
   };
-  return wizard;
 }
 
 // создание мага
@@ -27,16 +25,12 @@ function renderWizard(wizardData) {
   wizard.querySelector('.setup-similar-label').textContent = wizardData.name;
   wizard.querySelector('.wizard-coat').style.fill = wizardData.coatColor;
   wizard.querySelector('.wizard-eyes').style.fill = wizardData.eyesColor;
-
   return wizard;
 }
 
 // заполнения фрагмента магами из массива wizards
-function renderWizards(numberOfWizards) {
-  var wizardsData = [];
-  for (var j = 0; j < numberOfWizards; j++) {
-    wizardsData.push(createWizardData());
-  }
+function renderWizards(numberOfWizards, callback) {
+  var wizardsData = callback(numberOfWizards);
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < wizardsData.length; i++) {
     fragment.appendChild(renderWizard(wizardsData[i]));
@@ -44,6 +38,12 @@ function renderWizards(numberOfWizards) {
   wizardsList.appendChild(fragment);
 }
 
-renderWizards(WIZARDS_NUMBER);
-
+renderWizards(WIZARDS_NUMBER, function(number) {
+  var wizards = [];
+  for (var i = 0; i < number; i++) {
+    wizards.push(createWizardData());
+  }
+  return wizards;
+});
+userDialog.classList.remove('hidden');
 document.querySelector('.setup-similar').classList.remove('hidden');
