@@ -38,7 +38,7 @@ function renderWizards(numberOfWizards, callback) {
   wizardsList.appendChild(fragment);
 }
 
-renderWizards(WIZARDS_NUMBER, function(number) {
+renderWizards(WIZARDS_NUMBER, function (number) {
   var wizards = [];
   for (var i = 0; i < number; i++) {
     wizards.push(createWizardData());
