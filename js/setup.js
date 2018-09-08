@@ -28,9 +28,17 @@ function renderWizard(wizardData) {
   return wizard;
 }
 
+// создание массива  добавляемых элементов - магов
+function createWizardsList(number) {
+  var wizards = [];
+  for (var i = 0; i < number; i++) {
+    wizards.push(createWizardData());
+  }
+  return wizards;
+}
+
 // заполнения фрагмента магами из массива wizards
-function renderWizards(numberOfWizards, callback) {
-  var wizardsData = callback(numberOfWizards);
+function renderWizards(wizardsData) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < wizardsData.length; i++) {
     fragment.appendChild(renderWizard(wizardsData[i]));
@@ -38,12 +46,7 @@ function renderWizards(numberOfWizards, callback) {
   wizardsList.appendChild(fragment);
 }
 
-renderWizards(WIZARDS_NUMBER, function (number) {
-  var wizards = [];
-  for (var i = 0; i < number; i++) {
-    wizards.push(createWizardData());
-  }
-  return wizards;
-});
+var wizards = createWizardsList(WIZARDS_NUMBER);
+renderWizards(wizards);
 userDialog.classList.remove('hidden');
 document.querySelector('.setup-similar').classList.remove('hidden');
