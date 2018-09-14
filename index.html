@@ -63,12 +63,13 @@
   <div class="demo"></div>
 
   <div class="setup-open">
-    <img src="./img/user-1.jpg" class="setup-open-icon">
+    <img src="./img/user-1.jpg" class="setup-open-icon" tabindex="0">
   </div>
 </header>
 
 <div class="overlay setup hidden">
   <form class="setup-wizard-form"
+        action="https://js.dump.academy/code-and-magick"
         method="post"
         enctype="multipart/form-data"
         autocomplete="off">
@@ -81,12 +82,12 @@
         </div>
         <label>
           <input type="text" name="username"
-                 maxlength="25" required
+                 minLength="2" maxlength="25" required
                  class="setup-user-name" value="Синий Пендальф"/>
         </label>
       </div>
 
-      <span class="setup-close">&times;</span>
+      <span class="setup-close" tabindex="0">&times;</span>
     </div>
 
 
@@ -155,7 +156,7 @@
         <div class="setup-similar-list"><!--Список похожих персонажей--></div>
       </div>
 
-      <button class="button setup-submit">Сохранить</button>
+      <button class="button setup-submit" type="submit">Сохранить</button>
     </div>
   </form>
 </div>
@@ -181,21 +182,22 @@
   </div>
 </template>
 <script>
+  'use strict';
   var fireballSize = 22;
   var wizardSpeed = 5;
   var wizardWidth = 70;
 
-  var getFireballSpeed = function(left) {
+  var getFireballSpeed = function (left) {
     return left ? 5 : 2;
-  }
-  var getWizardHeight = function() {
+  };
+  var getWizardHeight = function () {
     var wizardHeight = wizardWidth * 1.337;
     return wizardHeight;
-  }
-  var getWizardX = function(width) {
-    return 0.5 * (width  - wizardWidth);
   };
-  var getWizardY = function(height) {
+  var getWizardX = function (width) {
+    return 0.5 * (width - wizardWidth);
+  };
+  var getWizardY = function getWizardY(height) {
     return height / 3;
   };
 </script>
