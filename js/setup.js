@@ -1,9 +1,32 @@
 'use strict';
 
-var NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)',
-  'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var NAMES = [
+  'Иван',
+  'Хуан Себастьян',
+  'Мария',
+  'Кристоф',
+  'Виктор',
+  'Юлия',
+  'Люпита',
+  'Вашингтон'
+];
+var SURNAMES = [
+  'да Марья',
+  'Верон',
+  'Мирабелла',
+  'Вальц', 'Онопко',
+  'Топольницкая',
+  'Нионго',
+  'Ирвинг'
+];
+var COAT_COLORS = [
+  'rgb(101, 137, 164)',
+  'rgb(241, 43, 107)',
+  'rgb(146, 100, 161)',
+  'rgb(56, 159, 117)',
+  'rgb(215, 210, 55)',
+  'rgb(0, 0, 0)'
+];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var WIZARDS_NUMBER = 4;
@@ -38,22 +61,6 @@ var setupEscPressHandler = function (evt) {
   }
 };
 
-var openSetup = function () {
-  setup.classList.remove('hidden');
-  setupUser.addEventListener('focus', function () { // определить состояние фокуса
-    document.removeEventListener('keydown', setupEscPressHandler);
-  });
-  setupUser.addEventListener('blur', function () {
-    document.addEventListener('keydown', setupEscPressHandler);
-  });
-  document.addEventListener('keydown', setupEscPressHandler);
-};
-
-var closeSetup = function () {
-  setup.classList.add('hidden');
-  document.removeEventListener('keydown', setupEscPressHandler);
-};
-
 var changeColor = function (wizaerdElem, colorList, countKey, styleProperty) {
   countsOfElemColors[countKey]++;
   if (countsOfElemColors[countKey] === colorList.length) {
@@ -64,15 +71,31 @@ var changeColor = function (wizaerdElem, colorList, countKey, styleProperty) {
   return value;
 };
 
-wizardCoat.addEventListener('click', function () {
-  wizardCoatInput.value = changeColor(wizardCoat, COAT_COLORS, 'coat', 'fill');
-});
-wizardEyes.addEventListener('click', function () {
-  wizardEyesInput.value = changeColor(wizardEyes, EYES_COLORS, 'eyes', 'fill');
-});
-wizardFireball.addEventListener('click', function () {
-  wizardFireballInput.value = changeColor(wizardFireball, FIREBALL_COLORS, 'fireball', 'backgroundColor');
-});
+var openSetup = function () {
+  setup.classList.remove('hidden');
+  setupUser.addEventListener('focus', function () { // определить состояние фокуса
+    document.removeEventListener('keydown', setupEscPressHandler);
+  });
+  setupUser.addEventListener('blur', function () {
+    document.addEventListener('keydown', setupEscPressHandler);
+  });
+  document.addEventListener('keydown', setupEscPressHandler);
+
+  wizardCoat.addEventListener('click', function () {
+    wizardCoatInput.value = changeColor(wizardCoat, COAT_COLORS, 'coat', 'fill');
+  });
+  wizardEyes.addEventListener('click', function () {
+    wizardEyesInput.value = changeColor(wizardEyes, EYES_COLORS, 'eyes', 'fill');
+  });
+  wizardFireball.addEventListener('click', function () {
+    wizardFireballInput.value = changeColor(wizardFireball, FIREBALL_COLORS, 'fireball', 'backgroundColor');
+  });
+};
+
+var closeSetup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', setupEscPressHandler);
+};
 
 setupOpenBtn.addEventListener('click', function () {
   openSetup();
