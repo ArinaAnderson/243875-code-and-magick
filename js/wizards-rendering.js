@@ -2,37 +2,9 @@
 
 // Модуль рендеринга магов wizards-rendering.js
 (function () {
-  var NAMES = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон'
-  ];
-  var SURNAMES = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг'
-  ];
   var WIZARDS_NUMBER = 4;
   var wizardsList = document.querySelector('.setup-similar-list');
   var wizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
-  function createWizardData() {
-    return {
-      name: NAMES[Math.floor(Math.random() * NAMES.length)] + ' ' + SURNAMES[Math.floor(Math.random() * SURNAMES.length)],
-      coatColor: window.colours.COAT_COLORS[Math.floor(Math.random() * window.colours.COAT_COLORS.length)],
-      eyesColor: window.colours.EYES_COLORS[Math.floor(Math.random() * window.colours.EYES_COLORS.length)],
-    };
-  }
 
   function renderWizard(wizardData) {
     var wizard = wizardTemplate.cloneNode(true);
@@ -45,7 +17,7 @@
   function createWizardsList(number) {
     var wizards = [];
     for (var i = 0; i < number; i++) {
-      wizards.push(createWizardData());
+      wizards.push(window.wizardsData());
     }
     return wizards;
   }

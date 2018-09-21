@@ -1,6 +1,16 @@
 'use strict';
 // Модуль dialog.js
 (function () {
+  var COAT_COLORS = [
+    'rgb(101, 137, 164)',
+    'rgb(241, 43, 107)',
+    'rgb(146, 100, 161)',
+    'rgb(56, 159, 117)',
+    'rgb(215, 210, 55)',
+    'rgb(0, 0, 0)'
+  ];
+  var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+  var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
   var setup = document.querySelector('.setup');
   var setupOpenBtn = document.querySelector('.setup-open');
   var setupCloseBtn = setup.querySelector('.setup-close');
@@ -31,7 +41,7 @@
   };
 
   var setupEscPressHandler = function (evt) {
-    window.util.escPress(evt, closeSetup);
+    window.utils.isEscPress(evt, closeSetup);
   };
 
 
@@ -46,13 +56,13 @@
     document.addEventListener('keydown', setupEscPressHandler);
 
     wizardCoat.addEventListener('click', function () {
-      wizardCoatInput.value = changeColor(wizardCoat, window.colours.COAT_COLORS, 'coat', 'fill');
+      wizardCoatInput.value = changeColor(wizardCoat, COAT_COLORS, 'coat', 'fill');
     });
     wizardEyes.addEventListener('click', function () {
-      wizardEyesInput.value = changeColor(wizardEyes, window.colours.EYES_COLORS, 'eyes', 'fill');
+      wizardEyesInput.value = changeColor(wizardEyes, EYES_COLORS, 'eyes', 'fill');
     });
     wizardFireball.addEventListener('click', function () {
-      wizardFireballInput.value = changeColor(wizardFireball, window.colours.FIREBALL_COLORS, 'fireball', 'backgroundColor');
+      wizardFireballInput.value = changeColor(wizardFireball, FIREBALL_COLORS, 'fireball', 'backgroundColor');
     });
   };
 
@@ -65,13 +75,13 @@
     openSetup();
   });
   setupOpenBtn.addEventListener('keydown', function (evt) {
-    window.util.enterPress(evt, openSetup);
+    window.utils.isEnterPress(evt, openSetup);
   });
   setupCloseBtn.addEventListener('click', function () {
     closeSetup();
   });
   setupCloseBtn.addEventListener('keydown', function (evt) {
-    window.util.enterPress(evt, closeSetup);
+    window.utils.isEnterPress(evt, closeSetup);
   });
 
   document.querySelector('.setup-similar').classList.remove('hidden');
