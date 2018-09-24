@@ -1,6 +1,4 @@
 'use strict';
-
-// Модуль рендеринга магов wizards-rendering.js
 (function () {
   var WIZARDS_NUMBER = 4;
   var wizardsList = document.querySelector('.setup-similar-list');
@@ -17,7 +15,7 @@
   function createWizardsList(number) {
     var wizards = [];
     for (var i = 0; i < number; i++) {
-      wizards.push(window.wizardsData());
+      wizards.push(window.getWizardData());
     }
     return wizards;
   }

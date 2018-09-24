@@ -1,5 +1,4 @@
 'use strict';
-// Модуль dialog.js
 (function () {
   var COAT_COLORS = [
     'rgb(101, 137, 164)',
@@ -15,7 +14,7 @@
   var setupOpenBtn = document.querySelector('.setup-open');
   var setupCloseBtn = setup.querySelector('.setup-close');
   var setupUser = document.querySelector('[name = username]');
-
+  var setupToggler = setup.querySelector('.upload');
   var wizardSetup = document.querySelector('.setup-wizard');
   var wizardCoat = wizardSetup.querySelector('.wizard-coat');
   var wizardCoatInput = document.querySelector('[name = coat-color]');
@@ -23,7 +22,7 @@
   var wizardEyesInput = document.querySelector('[name = eyes-color]');
   var wizardFireball = document.querySelector('.setup-fireball-wrap');
   var wizardFireballInput = wizardFireball.querySelector('[name = fireball-color]');
-
+  var setupInitialCoord;
   var countsOfElemColors = {
     'coat': 0,
     'eyes': 0,
@@ -44,16 +43,79 @@
     window.utils.isEscPress(evt, closeSetup);
   };
 
+  var setupTogglerMouseDownHandler = function (evt) {
+    evt.preventDefault();
+    var startCoord = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var dragged = false;
+
+    var setupTogglerMouseMoveHandler = function (moveEvt) {
+      moveEvt.preventDefault();
+      dragged = true;
+
+      var shift = {
+        x: startCoord.x - moveEvt.clientX,
+        y: startCoord.y - moveEvt.clientY
+      };
+
+      startCoord = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      setup.style.left = (setup.offsetLeft - shift.x) + 'px';
+      setup.style.top = (setup.offsetTop - shift.y) + 'px';
+    };
+
+    var setupTogglerMouseUpHandler = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', setupTogglerMouseMoveHandler);
+      document.removeEventListener('mouseup', setupTogglerMouseUpHandler);
+
+      if (dragged) {
+        var defaultClickHandler = function (clickEvt) {
+          clickEvt.preventDefault();
+          setupToggler.removeEventListener('click', defaultClickHandler);
+        };
+        setupToggler.addEventListener('click', defaultClickHandler);
+      }
+    };
+
+    document.addEventListener('mousemove', setupTogglerMouseMoveHandler);
+    document.addEventListener('mouseup', setupTogglerMouseUpHandler);
+  };
+
+  var closeSetup = function () {
+    setup.classList.add('hidden');
+    document.removeEventListener('keydown', setupEscPressHandler);
+    setup.style.left = '50%';
+    setup.style.top = setupInitialCoord.y + 'px';
+  };
 
   var openSetup = function () {
     setup.classList.remove('hidden');
-    setupUser.addEventListener('focus', function () { // определить состояние фокуса
+    setupInitialCoord = {
+      y: setup.offsetTop
+    };
+
+    setupUser.addEventListener('focus', function () {
       document.removeEventListener('keydown', setupEscPressHandler);
     });
     setupUser.addEventListener('blur', function () {
       document.addEventListener('keydown', setupEscPressHandler);
     });
     document.addEventListener('keydown', setupEscPressHandler);
+
+    setupCloseBtn.addEventListener('click', function () {
+      closeSetup();
+    });
+    setupCloseBtn.addEventListener('keydown', function (evt) {
+      window.utils.isEnterPress(evt, closeSetup);
+    });
 
     wizardCoat.addEventListener('click', function () {
       wizardCoatInput.value = changeColor(wizardCoat, COAT_COLORS, 'coat', 'fill');
@@ -64,11 +126,8 @@
     wizardFireball.addEventListener('click', function () {
       wizardFireballInput.value = changeColor(wizardFireball, FIREBALL_COLORS, 'fireball', 'backgroundColor');
     });
-  };
 
-  var closeSetup = function () {
-    setup.classList.add('hidden');
-    document.removeEventListener('keydown', setupEscPressHandler);
+    setupToggler.addEventListener('mousedown', setupTogglerMouseDownHandler);
   };
 
   setupOpenBtn.addEventListener('click', function () {
@@ -77,12 +136,7 @@
   setupOpenBtn.addEventListener('keydown', function (evt) {
     window.utils.isEnterPress(evt, openSetup);
   });
-  setupCloseBtn.addEventListener('click', function () {
-    closeSetup();
-  });
-  setupCloseBtn.addEventListener('keydown', function (evt) {
-    window.utils.isEnterPress(evt, closeSetup);
-  });
 
   document.querySelector('.setup-similar').classList.remove('hidden');
 })();
+
