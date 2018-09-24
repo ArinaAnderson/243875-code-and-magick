@@ -139,3 +139,4 @@
 
   document.querySelector('.setup-similar').classList.remove('hidden');
 })();
+
