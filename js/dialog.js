@@ -23,7 +23,6 @@
   var wizardFireball = document.querySelector('.setup-fireball-wrap');
   var wizardFireballInput = wizardFireball.querySelector('[name = fireball-color]');
   var setupInitialCoord;
-  var body = document.querySelector('body');
   var countsOfElemColors = {
     'coat': 0,
     'eyes': 0,
@@ -50,9 +49,8 @@
       x: evt.clientX,
       y: evt.clientY
     };
-    
+
     var dragged = false;
-    var inputPicUnload = setup.querySelector('input[type="file"]');
 
     var setupTogglerMouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
@@ -79,13 +77,12 @@
       document.removeEventListener('mouseup', setupTogglerMouseUpHandler);
 
       if (dragged) {
-        var defaultClickHandler = function (evt) {
-          evt.preventDefault();
+        var defaultClickHandler = function (clickEvt) {
+          clickEvt.preventDefault();
           setupToggler.removeEventListener('click', defaultClickHandler);
         };
-        setupToggler.addEventListener('click', defaultClickHandler );
-        console.log('cat');
-      } 
+        setupToggler.addEventListener('click', defaultClickHandler);
+      }
     };
 
     document.addEventListener('mousemove', setupTogglerMouseMoveHandler);
