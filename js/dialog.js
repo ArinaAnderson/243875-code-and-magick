@@ -28,6 +28,7 @@
     'eyes': 0,
     'fireball': 0
   };
+  var setupForm = document.querySelector('.setup-wizard-form');
 
   var changeColor = function (wizaerdElem, colorList, countKey, styleProperty) {
     countsOfElemColors[countKey]++;
@@ -137,6 +138,12 @@
     window.utils.isEnterPress(evt, openSetup);
   });
 
-  document.querySelector('.setup-similar').classList.remove('hidden');
+  var formSubmitHandler = function () {
+    setup.classList.add('hidden');
+  };
+  setupForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(setupForm), formSubmitHandler, window.utils.errorHandler);
+    evt.preventDefault();
+  });
 })();
 
