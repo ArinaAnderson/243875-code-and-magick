@@ -142,7 +142,7 @@
     setup.classList.add('hidden');
   };
   setupForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(setupForm), formSubmitHandler, window.utils.errorHandler);
+    window.backend.makeXhrRequest(formSubmitHandler, window.utils.errorHandler, 'POST', new FormData(setupForm));
     evt.preventDefault();
   });
 })();

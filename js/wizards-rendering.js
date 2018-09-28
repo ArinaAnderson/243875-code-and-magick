@@ -22,5 +22,5 @@
     document.querySelector('.setup-similar').classList.remove('hidden');
   };
 
-  window.backend.load(renderWizards, window.utils.errorHandler);
+  window.backend.makeXhrRequest(renderWizards, window.utils.errorHandler, 'GET');
 })();
