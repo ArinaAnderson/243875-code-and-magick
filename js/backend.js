@@ -4,19 +4,19 @@
   var URL_GET = 'https://js.dump.academy/code-and-magick/data';
   var URL_POST = 'https://js.dump.academy/code-and-magick';
 
-  var createXhrRequest = function (cb1, cb2) {
+  var createXhrRequest = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
       if (xhr.status === SUCCESS_RESP_STATUS) {
-        cb1(xhr.response);
+        onLoad(xhr.response);
       } else {
-        cb2('Статус запроса: ' + xhr.status + ' ' + xhr.statusText);
+        onError('Статус запроса: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
     xhr.addEventListener('error', function () {
-      cb2('Произошла ошибка соединения');
+      onError('Произошла ошибка соединения');
     });
     return xhr;
   };
