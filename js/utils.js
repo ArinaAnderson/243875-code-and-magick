@@ -13,5 +13,20 @@
         action();
       }
     },
+    shuffleArray: function (list) {
+      for (var i = list.length - 1; i > 0; i--) {
+        var randomNum = Math.floor(Math.random() * (i + 1));
+        var randomElement = list[randomNum];
+        list[randomNum] = list[i];
+        list[i] = randomElement;
+      }
+      return list;
+    },
+    errorHandler: function (errorMessage) { // util
+      var node = document.createElement('div');
+      node.classList.add('error-message');
+      node.textContent = errorMessage;
+      document.body.appendChild(node);
+    }
   };
 })();
