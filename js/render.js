@@ -2,7 +2,6 @@
 (function () {
   var wizardsList = document.querySelector('.setup-similar-list');
   var wizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-  var wizards = [];
 
   var renderWizard = function (wizardData) {
     var wizard = wizardTemplate.cloneNode(true);
@@ -21,5 +20,5 @@
     }
     wizardsList.appendChild(fragment);
     document.querySelector('.setup-similar').classList.remove('hidden');
-  }
+  };
 })();

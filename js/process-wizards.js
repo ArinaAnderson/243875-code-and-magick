@@ -27,7 +27,7 @@
     } else {
       return 0;
     }
-  }
+  };
 
   var successHandler = function (data) {
     loadedList = data;
@@ -45,14 +45,14 @@
         return rankDif;
       }));
     },
-    changeColor: function (wizardElem, colorList, wizItem, styleProperty) { 
+    changeColor: function (wizardElem, colorList, wizItem, styleProperty) {
       wizardsItems[wizItem].count++;
       if (wizardsItems[wizItem].count === colorList.length) {
         wizardsItems[wizItem].count = 0;
       }
       var value = colorList[wizardsItems[wizItem].count];
       wizardElem.style[styleProperty] = value;
-      wizardsItems[wizItem].color = value;console.log(wizardsItems[wizItem].timeout);
+      wizardsItems[wizItem].color = value;
       window.utils.debounce(window.processWizards.update, wizardsItems[wizItem].timeout, DEBOUNCE_INTERVAL);
 
       return value;
