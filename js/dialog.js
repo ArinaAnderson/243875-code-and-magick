@@ -10,6 +10,7 @@
   ];
   var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
   var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+
   var setup = document.querySelector('.setup');
   var setupOpenBtn = document.querySelector('.setup-open');
   var setupCloseBtn = setup.querySelector('.setup-close');
@@ -23,22 +24,7 @@
   var wizardFireball = document.querySelector('.setup-fireball-wrap');
   var wizardFireballInput = wizardFireball.querySelector('[name = fireball-color]');
   var setupInitialCoord;
-  var countsOfElemColors = {
-    'coat': 0,
-    'eyes': 0,
-    'fireball': 0
-  };
   var setupForm = document.querySelector('.setup-wizard-form');
-
-  var changeColor = function (wizaerdElem, colorList, countKey, styleProperty) {
-    countsOfElemColors[countKey]++;
-    if (countsOfElemColors[countKey] === colorList.length) {
-      countsOfElemColors[countKey] = 0;
-    }
-    var value = colorList[countsOfElemColors[countKey]];
-    wizaerdElem.style[styleProperty] = value;
-    return value;
-  };
 
   var setupEscPressHandler = function (evt) {
     window.utils.isEscPress(evt, closeSetup);
@@ -119,13 +105,13 @@
     });
 
     wizardCoat.addEventListener('click', function () {
-      wizardCoatInput.value = changeColor(wizardCoat, COAT_COLORS, 'coat', 'fill');
+      wizardCoatInput.value = window.processWizards.changeColor(wizardCoat, COAT_COLORS, 'coat', 'fill');
     });
     wizardEyes.addEventListener('click', function () {
-      wizardEyesInput.value = changeColor(wizardEyes, EYES_COLORS, 'eyes', 'fill');
+      wizardEyesInput.value = window.processWizards.changeColor(wizardEyes, EYES_COLORS, 'eyes', 'fill');
     });
     wizardFireball.addEventListener('click', function () {
-      wizardFireballInput.value = changeColor(wizardFireball, FIREBALL_COLORS, 'fireball', 'backgroundColor');
+      wizardFireballInput.value = window.processWizards.changeColor(wizardFireball, FIREBALL_COLORS, 'fireball', 'backgroundColor');
     });
 
     setupToggler.addEventListener('mousedown', setupTogglerMouseDownHandler);
@@ -146,4 +132,3 @@
     evt.preventDefault();
   });
 })();
-

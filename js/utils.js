@@ -22,11 +22,18 @@
       }
       return list;
     },
-    errorHandler: function (errorMessage) { // util
+    errorHandler: function (errorMessage) {
       var node = document.createElement('div');
       node.classList.add('error-message');
       node.textContent = errorMessage;
       document.body.appendChild(node);
+    },
+    debounce: function (cb, lastTimeout, interval) {
+      lastTimeout = null;
+      if (lastTimeout) {
+        clearTimeout(lastTimeout);
+      }
+      lastTimeout = setTimeout(cb, interval);
     }
   };
 })();
